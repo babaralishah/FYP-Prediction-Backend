@@ -120,8 +120,9 @@ def upload_file():
 
     if request.method == 'POST':
         file = request.files['file']
-        file.save(secure_filename(file.filename))
-        print('File received at rest service: ' + file.filename)
+        # file.save(secure_filename(file.filename))
+        file.save('public/files/'+file.filename)
+        print('File received at rest service: ' + 'public/files/'+file.filename)
         # Data Preprocessing:
         # print('Calling the uplaod file function in the same file')
         # upload_file1(file)
@@ -129,7 +130,7 @@ def upload_file():
         # global data_frame1
         # data_frame1 = pad.read_csv(file.filename)
         print('step-01')
-        data_frame = pad.read_csv(file.filename)
+        data_frame = pad.read_csv('public/files/'+file.filename)
 
         # Removing all columns with only one value, or have more than 50% missing values to work faster
         # data_frame=data_frame.dropna(axis=1)
@@ -142,7 +143,7 @@ def upload_file():
         nan = data_frame.isnull().sum().sum()
         print(nan)
         global data_frame1
-        data_frame1 = pad.read_csv(file.filename)
+        data_frame1 = pad.read_csv('public/files/'+file.filename)
 
         if nan != 0:
             data_frame1 = data_frame1.fillna(data_frame1.mean())
@@ -337,9 +338,10 @@ def upload_file():
         # y_pred = linear.predict(X_test)
 
         # Accuracy of Logistic Regression
-        print("\nLinear Regression Accuracy Score:\t", linear.score(
-            X_test, y_test)*100, "\t\t\t\t", linear.score(X_train, y_train)*100)
-        linear = linear.score(X_test, y_test)*100
+        # print("\nLinear Regression Accuracy Score:\t", linear.score(
+        #     X_test, y_test)*100, "\t\t\t\t", linear.score(X_train, y_train)*100)
+        linear_test = linear.score(X_test, y_test)*100
+        linear_train = linear.score(X_train, y_train)*100
         # Stops the watch
         end = time.time()
 
@@ -349,10 +351,11 @@ def upload_file():
         # Start calculating the time
         start = time.time()
 
-        # Accuracy of Logistic Regression
-        print("\nLogistic Regression Accuracy Score:\t", LR_clf.score(
-            X_test, y_test)*100, "\t\t\t\t", LR_clf.score(X_train, y_train)*100)
-        lr = LR_clf.score(X_test, y_test)*100
+        # # Accuracy of Logistic Regression
+        # print("\nLogistic Regression Accuracy Score:\t", LR_clf.score(
+        #     X_test, y_test)*100, "\t\t\t\t", LR_clf.score(X_train, y_train)*100)
+        lr_test = LR_clf.score(X_test, y_test)*100
+        lr_train = LR_clf.score(X_train, y_train)*100
         # Stops the watch
         end = time.time()
 
@@ -363,9 +366,10 @@ def upload_file():
         start = time.time()
 
         # Accuracy of Decision Tree
-        print("\nDecision Tree Accuracy Score:\t\t", DT_clf.score(
-            X_test, y_test)*100, "\t\t\t\t", DT_clf.score(X_train, y_train)*100)
-        dt = DT_clf.score(X_test, y_test)*100
+        # print("\nDecision Tree Accuracy Score:\t\t", DT_clf.score(
+        #     X_test, y_test)*100, "\t\t\t\t", DT_clf.score(X_train, y_train)*100)
+        dt_test = DT_clf.score(X_test, y_test)*100
+        dt_train = DT_clf.score(X_train, y_train)*100
         # Stops the watch
         end = time.time()
         # Calculates the consumed time
@@ -375,10 +379,11 @@ def upload_file():
         start = time.time()
 
         # Accuracy of K nearest Neighbours (KNN)
-        print("\nK nearest Neighbours Accuracy Score:\t", knn_clf.score(
-            X_test, y_test)*100, "\t\t\t\t", knn_clf.score(X_train, y_train)*100)
+        # print("\nK nearest Neighbours Accuracy Score:\t", knn_clf.score(
+        #     X_test, y_test)*100, "\t\t\t\t", knn_clf.score(X_train, y_train)*100)
         end = time.time()
-        knn = knn_clf.score(X_test, y_test)*100
+        knn_test = knn_clf.score(X_test, y_test)*100
+        knn_train = knn_clf.score(X_train, y_train)*100
         # Calculates the consumed time
         #print("\nExecution time of Knn Predicting: ",end - start)
 
@@ -386,11 +391,13 @@ def upload_file():
         start = time.time()
 
         # Accuracy of Rabdom Forest
-        print("\nRandom Forest Accuracy Score:\t\t", RF_clf.score(
-            X_test, y_test)*100, "\t\t\t\t", RF_clf.score(X_train, y_train)*100)
+        # print("\nRandom Forest Accuracy Score:\t\t", RF_clf.score(
+        #     X_test, y_test)*100, "\t\t\t\t", RF_clf.score(X_train, y_train)*100)
         # rf = RF_clf.score(X_test, y_test)*100
         # Stops the watch
         end = time.time()
+        rnn_test = RF_clf.score(X_test, y_test)*100
+        rnn_train = RF_clf.score(X_train, y_train)*100
 
         # Calculates the consumed time
         #print("\nExecution time of Random Forest Predicting: ",end - start)
@@ -399,38 +406,53 @@ def upload_file():
         start = time.time()
 
         # Accuracy of Naive Bayes Gaussian
-        print("\nNaive Bayes Gaussian Accuracy Score:\t", nbclf.score(
-            X_test, y_test)*100, "\t\t\t\t", nbclf.score(X_test, y_test)*100)
-        nbclf = nbclf.score(X_test, y_test)*100
+        # print("\nNaive Bayes Gaussian Accuracy Score:\t", nbclf.score(
+        #     X_test, y_test)*100, "\t\t\t\t", nbclf.score(X_test, y_test)*100)
+        nbclf_test = nbclf.score(X_test, y_test)*100
+        nbclf_train = nbclf.score(X_train, y_train)*100
         # Stops the watch
         end = time.time()
         #global svc
         # Accuracy of Naive Bayes Gaussian
-        # print("\nSupport Vector Machine Accuracy Score:\t",svc_clf.score(X_test, y_test)*100,"\t\t\t\t",nbclf.score(X_test,y_test)*100)
+        # print("\nSupport Vector Machine Accuracy Score:\t", svc_clf.score(
+        #     X_test, y_test)*100, "\t\t\t\t", svc_clf.score(X_test, y_test)*100)
 
-        # svc = svc_clf.score(X_test, y_test)*100
+        svc_test = svc_clf.score(X_test, y_test)*100
+        svc_train = svc_clf.score(X_train, y_train)*100
         #abc = 'hello'
 
         results = {
             "data": [
                 {
                     "Algorithm": "Linear Regression",
-                    "Efficiency": linear
-                },  {
+                    "Efficiency_Test": linear_test,
+                    "Efficiency_Train": linear_train
+                },
+                {
                     "Algorithm": "Logistic Regression",
-                    "Efficiency": lr
+                    "Efficiency_Test": lr_test,
+                    "Efficiency_Train": lr_train
+
                 }, {
                     "Algorithm": "Decision Tree",
-                    "Efficiency": dt
+                    "Efficiency_Test": dt_test,
+                    "Efficiency_Train": dt_train
                 },  {
                     "Algorithm": "K nearest neighbor",
-                    "Efficiency": knn
+                    "Efficiency_Test": knn_test,
+                    "Efficiency_Train": knn_train
                 },  {
                     "Algorithm": "Naive Bayes",
-                    "Efficiency": nbclf
+                    "Efficiency_Test": nbclf_test,
+                    "Efficiency_Train": nbclf_train
                 }, {
-                    "Algorithm": "Support Vector",
-                    "Efficiency": '  '
+                    "Algorithm": "Random Forest",
+                    "Efficiency_Test": rnn_test,
+                    "Efficiency_Train": rnn_train
+                }, {
+                    "Algorithm": "Support Vector Machine",
+                    "Efficiency_Test": svc_test,
+                    "Efficiency_Train": svc_train
                 }
 
             ]
