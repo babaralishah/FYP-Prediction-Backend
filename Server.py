@@ -100,25 +100,16 @@ def upload_file2():
     col_name = request.data
     col_name = col_name.decode('utf-8')
     print('Calling the uplaod file2: ')
-    # print(col_name)
     global data_frame1
-    # print(data_frame1[col_name])
+    X_data = data_frame1.iloc[:, :-1]
     y_data = data_frame1.iloc[:, [-1]]
+    X_data = X_data.to_json()
     y_data = y_data.to_json()
-    abc = ' '
-    abc = data_frame1[col_name].value_counts()
-    # print('\n\n\n')
-    # print(abc)
-    # print('\n\n\n')
-    a = "Hello"
-    # print('\nbefore\n')
-    # print(type(abc))
-    abc = abc.to_string()
-    # print('\nafter\n')
-    # print(type(abc))
-    # print(abc)
-    # print('\n\n\n')
-    return jsonify(abc, a)
+    col_categories = data_frame1[col_name].value_counts()
+    particualr_column = data_frame1[col_name]
+    particualr_column = particualr_column.to_json()
+    col_categories = col_categories.to_string()
+    return jsonify(col_categories, particualr_column, X_data, y_data)
 
 # ###########################################################################################################################
 
