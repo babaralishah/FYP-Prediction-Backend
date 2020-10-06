@@ -102,14 +102,16 @@ def upload_file2():
     print('Calling the uplaod file2: ')
     global data_frame1
     X_data = data_frame1.iloc[:, :-1]
-    y_data = data_frame1.iloc[:, [-1]]
+    # y_data = data_frame1.iloc[:, [-1]]
     X_data = X_data.to_json()
-    y_data = y_data.to_json()
+    # y_data = y_data.to_json()
     col_categories = data_frame1[col_name].value_counts()
     particualr_column = data_frame1[col_name]
     particualr_column = particualr_column.to_json()
+    y_data = data_frame1['Goal Scored']
+    y_data = y_data.to_json()
     col_categories = col_categories.to_string()
-    return jsonify(col_categories, particualr_column, X_data, y_data)
+    return jsonify(col_categories, particualr_column, y_data)
 
 # ###########################################################################################################################
 
