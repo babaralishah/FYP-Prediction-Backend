@@ -81,7 +81,7 @@ def index():
 
 # #########################################################################################################################
 
-
+# Returning the predictor Column categories 
 @app.route('/output1/', methods=['POST', 'GET'])
 @cross_origin(allow_headers=['http://localhost:4200'])
 def upload_file1():
@@ -93,22 +93,30 @@ def upload_file1():
 
 # ##########################################################################################################################
 
-
+# Returning the required visualization data
 @app.route('/output2/', methods=['POST', 'GET'])
 @cross_origin(allow_headers=['http://localhost:4200'])
 def upload_file2():
-    col_name = request.data
-    col_name = col_name.decode('utf-8')
+    print('\n\nrequest\n\n')
+    print(request)
+    col_name1 = request.form['name1']
+    col_name2 = request.form['name2']
+    print(col_name1)
+    print(col_name2)
+    # col_name = request.data
+    # print(request.data)
+    # col_name1 = col_name1.decode('utf-8')
+    # col_name2 = col_name2.decode('utf-8')
     print('Calling the uplaod file2: ')
     global data_frame1
     X_data = data_frame1.iloc[:, :-1]
     # y_data = data_frame1.iloc[:, [-1]]
     X_data = X_data.to_json()
     # y_data = y_data.to_json()
-    col_categories = data_frame1[col_name].value_counts()
-    particualr_column = data_frame1[col_name]
+    col_categories = data_frame1[col_name1].value_counts()
+    particualr_column = data_frame1[col_name1]
     particualr_column = particualr_column.to_json()
-    y_data = data_frame1['Goal Scored']
+    y_data = data_frame1[col_name2]
     y_data = y_data.to_json()
     col_categories = col_categories.to_string()
     return jsonify(col_categories, particualr_column, y_data)
