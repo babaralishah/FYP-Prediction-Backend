@@ -81,7 +81,9 @@ def index():
 
 # #########################################################################################################################
 
-# Returning the predictor Column categories 
+# Returning the predictor Column categories
+
+
 @app.route('/output1/', methods=['POST', 'GET'])
 @cross_origin(allow_headers=['http://localhost:4200'])
 def upload_file1():
@@ -267,9 +269,12 @@ def upload_file():
 
         # Training of Models on Train set
 
+        start = time.time()
         # fit the model with data
         linear.fit(X_train, y_train)
 
+        end = time.time()
+        lr_time = end - start
         # Calculating the processing time
         # import time
 
@@ -280,6 +285,7 @@ def upload_file():
 
         # Stops the watch
         end = time.time()
+        lrclf_time = end - start
         # Calculates the consumed time
         # print("\nExecution time of Linear regression training: ", end - start)
 
@@ -296,7 +302,9 @@ def upload_file():
 
         # fit the model with data
         DT_clf.fit(X_train, y_train)
+
         end = time.time()
+        dt_time = end - start
         # print("\nExecution time of Decision Tree training: ", end - start)
 
         start = time.time()
@@ -307,12 +315,17 @@ def upload_file():
         # Stops the watch
         end = time.time()
 
+        knn_time = end - start
         # Calculates the consumed time
         # print("\nExecution time of Knn training: ", end - start)
 
         # fit the model with data
+
+        start = time.time()
         svc_clf.fit(X_train, y_train.values.ravel())
         end = time.time()
+
+        svc_time = end - start
         # print("\nExecution time of SVC training: ", end - start)
 
         start = time.time()
@@ -323,6 +336,7 @@ def upload_file():
         # Stops the watch
         end = time.time()
 
+        nbclf_time = end - start
         # Calculates the consumed time
         # print("\nExecution time of Naive Bayes training: ", end - start)
 
@@ -334,6 +348,7 @@ def upload_file():
         # Stops the watch
         end = time.time()
 
+        rf_time = end - start
         # Calculates the consumed time
         # print("\nExecution time of Random Forest training: ", end - start)
 
@@ -435,34 +450,42 @@ def upload_file():
             "data": [
                 {
                     "Algorithm": "Linear Regression",
-                    "Efficiency_Test": linear_test,
-                    "Efficiency_Train": linear_train
+                    "Test data Accuracy": linear_test,
+                    "Train data Accuracy": linear_train,
+                    "Training Time": lr_time
+
                 },
                 {
                     "Algorithm": "Logistic Regression",
-                    "Efficiency_Test": lr_test,
-                    "Efficiency_Train": lr_train
+                    "Test data Accuracy": lr_test,
+                    "Train data Accuracy": lr_train,
+                    "Training Time": lrclf_time
 
                 }, {
                     "Algorithm": "Decision Tree",
-                    "Efficiency_Test": dt_test,
-                    "Efficiency_Train": dt_train
+                    "Test data Accuracy": dt_test,
+                    "Train data Accuracy": dt_train,
+                    "Training Time": dt_time
                 },  {
                     "Algorithm": "K nearest neighbor",
-                    "Efficiency_Test": knn_test,
-                    "Efficiency_Train": knn_train
+                    "Test data Accuracy": knn_test,
+                    "Train data Accuracy": knn_train,
+                    "Training Time": knn_time
                 },  {
                     "Algorithm": "Naive Bayes",
-                    "Efficiency_Test": nbclf_test,
-                    "Efficiency_Train": nbclf_train
+                    "Test data Accuracy": nbclf_test,
+                    "Train data Accuracy": nbclf_train,
+                    "Training Time": nbclf_time
                 }, {
                     "Algorithm": "Random Forest",
-                    "Efficiency_Test": rnn_test,
-                    "Efficiency_Train": rnn_train
+                    "Test data Accuracy": rnn_test,
+                    "Train data Accuracy": rnn_train,
+                    "Training Time": rf_time
                 }, {
                     "Algorithm": "Support Vector Machine",
-                    "Efficiency_Test": svc_test,
-                    "Efficiency_Train": svc_train
+                    "Test data Accuracy": svc_test,
+                    "Train data Accuracy": svc_train,
+                    "Training Time": svc_time
                 }
 
             ]
